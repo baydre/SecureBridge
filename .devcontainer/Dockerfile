@@ -19,7 +19,8 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && rm -rf /var/lib/apt/lists/*
 
 # Install uv for faster package management (optional but recommended)
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+# Using pip to install from PyPI for security and version control
+RUN pip install uv
 
 # Set working directory
 WORKDIR /workspace

@@ -21,13 +21,18 @@ pip install pytest pytest-asyncio httpx black ruff --quiet
 # Generate secure keys if they don't exist
 if [ ! -f ".env" ]; then
     echo "🔑 Generating secure keys..."
-    python generate_keys.py
-    
-    echo "📝 Setting up environment file..."
-    cp .env.example .env
-    
-    # Note: Users will need to manually add the generated keys to .env
-    echo "⚠️  Please add the generated keys from the output above to your .env file"
+    if python generate_keys.py; then
+        echo "✅ Keys generated successfully"
+        
+        echo "📝 Setting up environment file..."
+        cp .env.example .env
+        
+        # Note: Users will need to manually add the generated keys to .env
+        echo "⚠️  Please add the generated keys from the output above to your .env file"
+    else
+        echo "❌ Failed to generate keys. Please run 'python generate_keys.py' manually."
+        exit 1
+    fi
 else
     echo "✅ .env file already exists"
 fi
