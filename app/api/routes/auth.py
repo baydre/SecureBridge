@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from app.core.database import get_db
 from app.schemas.user import UserCreate, UserResponse, UserLogin
-from app.schemas.auth import Token, AuthResponse
+from app.schemas.auth import Token, AuthResponse, RefreshTokenRequest
 from app.services.auth_service import AuthService
 from app.middleware.auth_middleware import get_current_active_user
 from app.models.user import User
@@ -94,7 +94,7 @@ async def login(
 
 @router.post("/refresh", response_model=Token)
 async def refresh_token(
-    refresh_token: str,
+    request: RefreshTokenRequest,
     db: Session = Depends(get_db),
 ):
     """
@@ -105,7 +105,7 @@ async def refresh_token(
     Returns new access and refresh tokens.
     """
     # Verify refresh token
-    payload = AuthService.verify_token(refresh_token)
+    payload = AuthService.verify_token(request.refresh_token)
     
     if not payload or payload.get("type") != "refresh":
         raise HTTPException(

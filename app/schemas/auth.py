@@ -17,6 +17,11 @@ class TokenData(BaseModel):
     role: Optional[str] = None
 
 
+class RefreshTokenRequest(BaseModel):
+    """Schema for refresh token request."""
+    refresh_token: str
+
+
 class AuthResponse(BaseModel):
     """Schema for authentication response."""
     user: dict
